@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="title">
-      
+        這是固定不變的
     </div>
   </header>
 </template>
@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   padding: 0 24px;
-  height: 80px;
+  height: 50px;
   background-color: white;
   
   /* 讓 header 內縮 */

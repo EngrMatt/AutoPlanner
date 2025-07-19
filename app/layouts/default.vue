@@ -4,7 +4,6 @@
     <div class="main-wrapper">
       <Sidebar v-model:active="activeMenu" />
       <main class="content">
-        
         <NuxtPage :activeMenu="activeMenu" />
       </main>
     </div>

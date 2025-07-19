@@ -1,84 +1,54 @@
 <template>
   <nav class="sidebar">
-     <div class="sidebar-title" style="background-color: #2f5bcc;">
-        <img src="/assets/logo-3.png" alt="Logo" class="logo" /> 
-        AutoPlanner
-      </div>
-      <br>
-      <!-- <hr class="title-hr" /> -->
-      
+    <NuxtLink to="/" class="sidebar-title" style="background-color: #2f5bcc;">
+      <img src="/assets/logo-3.png" alt="Logo" class="logo" /> 
+      AutoPlanner
+    </NuxtLink>
     <ul class="menu-list">
       <li>
-        <button
-          :class="{ active: active === 'todo' }"
-          @click="$emit('update:active', 'todo')"
-        >
-          To-do list
-        </button>
+        <NuxtLink to="/kanban" class="menu-button" :class="{ active: $route.path === '/kanban' }">
+          <!-- image color: #e2e2e2 -->
+          <img src="/assets/kanban.png" alt="side-bar-icon" class="side-bar-icon" /> &nbsp Kanban
+        </NuxtLink>
       </li>
       <li>
-        <button
-          :class="{ active: active === 'kanban' }"
-          @click="$emit('update:active', 'kanban')"
-        >
-          Kanban
-        </button>
-      </li>
-      <li>
-        <button
-          :class="{ active: active === 'settings' }"
-          @click="$emit('update:active', 'settings')"
-        >
-          Settings
-        </button>
-      </li>
-      <li>
-        <button
-          :class="{ active: active === 'analysis' }"
-          @click="$emit('update:active', 'analysis')"
-        >
-          Analysis
-        </button>
+        <NuxtLink to="/todo" class="menu-button" :class="{ active: $route.path === '/todo' }">
+          <img src="/assets/to-do-list.png" alt="side-bar-icon" class="side-bar-icon" /> &nbsp To-do List
+        </NuxtLink>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup>
-defineProps({
-  active: String,
-});
+import { useRoute } from 'vue-router'
+const $route = useRoute()
 </script>
 
 <style scoped>
-  .title-hr {
-  border: none;
-  height: 1px;
-  background-color: rgba(226, 226, 226, 0.4); /* 淡淡的灰色 */
-  margin: 8px 0 16px 0;
-  width: 100%;
-}
-
 .sidebar-title {
-  padding: 10px 10px;
-  font-family: system-ui;
-  font-size:12pt;
-  font-weight:bolder;
+  padding: 10px;
+  font-size: 12pt;
+  font-weight: bolder;
   color: rgb(226, 226, 226);
   display: flex;
-  align-items: center;  /* 垂直置中 */
-  gap: 8px;             /* 圖片和文字間距 */
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
 }
 
 .logo {
-  width: 30px;  /* 你可以依需求調整大小 */
+  width: 30px;
   border-radius: 15% 20% 15% 20%;
+}
+.side-bar-icon {
+  width: 20px;
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  background-color: #0f1d41 ; /* bg-gray-100 */
+  background-color: #0f1d41;
   color: rgb(226, 226, 226);
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
 }
@@ -86,35 +56,38 @@ defineProps({
 .menu-list {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* space-y-2 => 8px */
+  gap: 8px;
   flex-grow: 1;
-  margin: 0;
-  padding: 0;
+  margin-top: 10px;
+  padding: 6px 6px;
   list-style: none;
 }
 
-.menu-list button {
+/* 讓 NuxtLink 保留按鈕樣式 */
+.menu-button {
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: 8px 16px; /* py-2 px-4 */
-  border-radius: 0.375rem; /* rounded */
+  padding: 8px 16px;
+  border-radius: 0.375rem;
   background-color: transparent;
   border: none;
-  color: #d2d2d2; /* text-gray-600 */
+  color: #d2d2d2;
   font-size: 1rem;
+  text-decoration: none;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.menu-list button:hover {
-  background-color: #d1d5db; /* hover:bg-gray-300 */
+.menu-button:hover {
+   background-color: rgba(30, 144, 255, 0.3); /* DodgerBlue 30%透明 */
+  color: #fff;
+  font-weight: 600;
+
 }
 
-/* .menu-list button.active {
-  background-color: #9ca3af;
-  color: white;
-} */
-
-/* 如果你想放 icon，之後可以在 button 裡放 span 並用 margin-right 調整 */
+.menu-button.active {
+  background-color: #1e3a8a; /* 深藍色 */
+  color: #fff;
+  box-shadow: 0 0 8px rgba(30, 64, 175, 0.7);
+}
 </style>
