@@ -2,36 +2,36 @@
   <div class="board">
     <div class="column">
       <div>Todo</div>
-      <Draggable v-model="todo" group="tasks" item-key="id">
-        <template #item="{ element }">
-          <div class="card">{{ element.name }}</div>
-        </template>
-      </Draggable>
+      <div ref="todoRef" class="list">
+        <div v-for="item in todo" :key="item.id" class="card">
+          {{ item.name }}
+        </div>
+      </div>
     </div>
 
     <div class="column">
-      <div>inProgress</div>
-      <Draggable v-model="inProgress" group="tasks" item-key="id">
-        <template #item="{ element }">
-          <div class="card">{{ element.name }}</div>
-        </template>
-      </Draggable>
+      <div>In Progress</div>
+      <div ref="inProgressRef" class="list">
+        <div v-for="item in inProgress" :key="item.id" class="card">
+          {{ item.name }}
+        </div>
+      </div>
     </div>
 
     <div class="column">
       <div>Done</div>
-      <Draggable v-model="done" group="tasks" item-key="id">
-        <template #item="{ element }">
-          <div class="card">{{ element.name }}</div>
-        </template>
-      </Draggable>
+      <div ref="doneRef" class="list">
+        <div v-for="item in done" :key="item.id" class="card">
+          {{ item.name }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import Draggable from 'vuedraggable'
+import { useSortable } from '@vueuse/integrations/useSortable'
 
 const todo = ref([
   { id: 1, name: '任務 A' },
@@ -45,19 +45,26 @@ const inProgress = ref([
 const done = ref([
   { id: 4, name: '任務 D' },
 ])
+
+const todoRef = ref()
+const inProgressRef = ref()
+const doneRef = ref()
+
+useSortable(todoRef, todo, { group: 'tasks' })
+useSortable(inProgressRef, inProgress, { group: 'tasks' })
+useSortable(doneRef, done, { group: 'tasks' })
 </script>
 
 <style scoped>
 .board {
   display: flex;
-  /* justify-content: space-around; */
-  height: calc(100vh - 100px); /* 預留 header 空間 */
+  height: calc(100vh - 100px);
   gap: 16px;
   font-size: 12pt;
 }
 
 .column {
-  width: 10%;
+  flex: 1;
   background: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -68,9 +75,11 @@ const done = ref([
   font-size: 10pt;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 16px;
+.list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .card {

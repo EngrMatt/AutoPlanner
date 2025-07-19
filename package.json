@@ -10,7 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@vueuse/core": "^13.5.0",
+    "@vueuse/integrations": "^13.5.0",
     "nuxt": "^4.0.0",
+    "sortablejs": "^1.15.6",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1",
     "vuedraggable": "^4.1.0"
