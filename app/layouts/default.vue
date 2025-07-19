@@ -4,7 +4,7 @@
     <div class="main-wrapper">
       <Sidebar v-model:active="activeMenu" />
       <main class="content">
-        CWSC
+        
         <NuxtPage :activeMenu="activeMenu" />
       </main>
     </div>
@@ -32,12 +32,8 @@ const activeMenu = ref('home')
   top: 0;
   left: 11rem; /* 留出 sidebar 寬度 */
   right: 0;
-  height: 60px; /* 跟你 Header.vue 一致 */
-  background-color: white;
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   z-index: 20; /* 確保 header 蓋在 sidebar 上面 */
 }
 
@@ -52,12 +48,11 @@ const activeMenu = ref('home')
 }
 
 .main-wrapper {
-  margin-top: 60px; /* 預留 header 高度 */
-  margin-left: 8rem; /* 預留 sidebar 寬度 */
+  margin-top: 50px; /* 預留 header 高度 */
+  margin-left: 11rem; /* 預留 sidebar 寬度 */
   height: calc(100vh - 60px);
   overflow: auto;
   padding: 24px;
-  background-color: white;
 }
 
 </style>

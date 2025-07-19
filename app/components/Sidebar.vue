@@ -80,6 +80,7 @@ defineProps({
   flex-direction: column;
   background-color: #0f1d41 ; /* bg-gray-100 */
   color: rgb(226, 226, 226);
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .menu-list {
