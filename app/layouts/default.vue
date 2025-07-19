@@ -21,7 +21,6 @@ const activeMenu = ref('home')
 
 <style scoped>
 .layout {
-  height: 100vh;
   /* 不用 flex-direction column，因為 header 與 sidebar 都 fixed 了 */
   position: relative;
 }
@@ -41,7 +40,7 @@ const activeMenu = ref('home')
   top: 0;
   left: 0;
   width: 11rem;
-  height: 100vh;
+  height: calc(100vh);
   box-sizing: border-box;
   z-index: 10; /* 比 header 層級低 */
 }
@@ -49,9 +48,9 @@ const activeMenu = ref('home')
 .main-wrapper {
   margin-top: 50px; /* 預留 header 高度 */
   margin-left: 11rem; /* 預留 sidebar 寬度 */
-  height: calc(100vh - 60px);
   overflow: auto;
   padding: 24px;
 }
+
 
 </style>

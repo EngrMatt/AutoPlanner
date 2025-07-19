@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="title">
-        這是固定不變的
+        
     </div>
      <div class="user-info">
       <button class="notification-btn" aria-label="通知鈴鐺">
