@@ -2,13 +2,18 @@
   <nav class="sidebar">
     <NuxtLink to="/" class="sidebar-title" style="background-color: #2f5bcc;">
       <img src="/assets/logo-3.png" alt="Logo" class="logo" /> 
-      AutoPlanner
+      AutoPlanner 
     </NuxtLink>
     <ul class="menu-list">
       <li>
         <NuxtLink to="/kanban" class="menu-button" :class="{ active: $route.path === '/kanban' }">
           <!-- image color: #e2e2e2 -->
           <img src="/assets/kanban.png" alt="side-bar-icon" class="side-bar-icon" /> &nbsp Kanban
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/dashboard" class="menu-button" :class="{ active: $route.path === '/dashboard' }">
+          <img src="/assets/dashboard.png" alt="side-bar-icon" class="side-bar-icon" /> &nbsp Dashboard
         </NuxtLink>
       </li>
       <li>
@@ -56,7 +61,7 @@ const $route = useRoute()
 .menu-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
   flex-grow: 1;
   margin-top: 10px;
   padding: 6px 6px;
