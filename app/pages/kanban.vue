@@ -1,84 +1,106 @@
 <template>
   <div class="board">
-    <div class="column">
-      <div class="column-title">New Task</div>
-      <div ref="newTaskRef" class="list">
-        <div v-for="item in newTask" :key="item.id" class="card">
-          <div class="card-header">
-            <div class="avatar"></div>
-            <div class="card-title">{{ item.name }}</div>
-          </div>
-          <div class="card-labels">
-            <span class="label feedback">Feedback</span>
-            <span class="label due-date">6 days left</span>
-          </div>
-          <div class="card-footer">
-            <span class="subtask">✔️ 0/2</span>
+    <div class="column-wrapper">
+      <div class="column-title">New Task
+        &nbsp
+        <a class="column-title-count">2</a>
+      </div>
+      <div class="column">
+        <div ref="newTaskRef" class="list">
+          <div v-for="item in newTask" :key="item.id" class="card">
+            <div class="card-header">
+              <div class="avatar"></div>
+              <div class="card-title">{{ item.name }}</div>
+            </div>
+            <div class="card-labels">
+              <span class="label feedback">Feedback</span>
+              <span class="label due-date">6 days left</span>
+            </div>
+            <div class="card-footer">
+              <span class="subtask">✔️ 0/2</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="column">
-      <div class="column-title">Scheduled</div>
-      <div ref="scheduledRef" class="list">
-        <div v-for="item in scheduled" :key="item.id" class="card">
-          <div class="card-header">
-            <div class="avatar"></div>
-            <div class="card-title">{{ item.name }}</div>
-          </div>
-          <div class="card-labels">
-            <span class="label blocked">Blocked</span>
-            <span class="label due-date">10 days left</span>
-          </div>
-          <div class="card-footer">
-            <span class="subtask">✔️ 0/4</span>
+    <div class="column-wrapper">
+      <div class="column-title">Scheduled
+        &nbsp
+        <a class="column-title-count">1</a>
+      </div>
+      <div class="column">
+        <div ref="scheduledRef" class="list">
+          <div v-for="item in scheduled" :key="item.id" class="card">
+            <div class="card-header">
+              <div class="avatar"></div>
+              <div class="card-title">{{ item.name }}</div>
+            </div>
+            <div class="card-labels">
+              <span class="label blocked">Blocked</span>
+              <span class="label due-date">10 days left</span>
+            </div>
+            <div class="card-footer">
+              <span class="subtask">✔️ 0/4</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="column">
-      <div class="column-title">In Progress</div>
-      <div ref="inProgressRef" class="list">
-        <div v-for="item in inProgress" :key="item.id" class="card">
-          <div class="card-header">
-            <div class="avatar"></div>
-            <div class="card-title">{{ item.name }}</div>
-          </div>
-          <div class="card-labels">
-            <span class="label asap">ASAP</span>
-            <span class="label due-date">Due tomorrow</span>
-          </div>
-          <div class="card-footer">
-            <span class="subtask">✔️ 1/3</span>
+    <div class="column-wrapper">
+      <div class="column-title">In Progress
+          &nbsp
+        <a class="column-title-count">1</a>
+      </div>
+      <div class="column">
+        <div ref="inProgressRef" class="list">
+          <div v-for="item in inProgress" :key="item.id" class="card">
+            <div class="card-header">
+              <div class="avatar"></div>
+              <div class="card-title">{{ item.name }}</div>
+            </div>
+            <div class="card-labels">
+              <span class="label asap">ASAP</span>
+              <span class="label due-date">Due tomorrow</span>
+            </div>
+            <div class="card-footer">
+              <span class="subtask">✔️ 1/3</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="column">
-      <div class="column-title">Completed</div>
-      <div ref="completedRef" class="list">
-        <div v-for="item in completed" :key="item.id" class="card completed">
-          <div class="card-header">
-            <div class="avatar"></div>
-            <div class="card-title">{{ item.name }}</div>
-          </div>
-          <div class="card-footer">
-            <span class="subtask">✔️ 4/4</span>
+    <div class="column-wrapper">
+      <div class="column-title">Completed
+          &nbsp
+        <a class="column-title-count">4</a>
+      </div>
+      <div class="column">
+        <div ref="completedRef" class="list">
+          <div v-for="item in completed" :key="item.id" class="card completed">
+            <div class="card-header">
+              <div class="avatar"></div>
+              <div class="card-title">{{ item.name }}</div>
+            </div>
+            <div class="card-footer">
+              <span class="subtask">✔️ 4/4</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 日誌區塊 -->
-    <div class="column log-column">
+    <div class="column-wrapper">
       <div class="column-title">📜 Activity Log</div>
-      <div class="list log-list">
-        <div v-for="(log, index) in activityLogs" :key="index" class="log-entry">
-          <div class="log-timestamp">{{ log.split(']')[0] + ']' }}</div>
-          <div class="log-message">{{ log.split(']')[1] }}</div>
+      <div class="column log-column">
+        <div class="list log-list">
+          <div v-for="(log, index) in activityLogs" :key="index" class="log-entry">
+            <div class="log-timestamp">{{ log.split(']')[0] + ']' }}</div>
+            <div class="log-message">{{ log.split(']')[1] }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -104,9 +126,9 @@ const inProgress = ref([
 
 const completed = ref([
   { id: 5, name: '任務 E' },
-   { id: 6, name: '任務 E' },
-    { id: 7, name: '任務 E' },
-     { id: 8, name: '任務 E' },
+  { id: 6, name: '任務 E' },
+  { id: 7, name: '任務 E' },
+  { id: 8, name: '任務 E' },
 ])
 
 const activityLogs = ref([])
@@ -145,41 +167,62 @@ useSortable(completedRef, completed, {
 <style scoped>
 .board {
   display: flex;
-  gap: 16px;
+  gap: 40px;
   font-size: 12pt;
-  max-height: calc(100vh - 100px); /* 改用 max-height */
-  /* 不要 height */
-  align-items: flex-start; /* 讓子項目靠上對齊 */
+  max-height: calc(100vh - 100px);
+  align-items: flex-start;
 }
 
-.column {
-   /* 取消 flex:1 改成以下，讓寬度平均分但高度跟內容 */
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 0;
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.column-wrapper {
   display: flex;
   flex-direction: column;
-  max-height: 100%; /* 確保不超過board max-height */
-  overflow: hidden;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 220px;
+  position: relative;
+  margin-bottom: 24px;
 }
 
 .column-title {
   font-weight: bold;
-  font-size: 14pt;
+  font-size: 12pt;
   margin-bottom: 8px;
+  padding: 0 8px;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+  gap: 20px;
+}
+
+.column-title-count {
+  background-color: #ddd;
+  border-radius: 12px;   /* 長橢圓形 */
+  padding: 2px 10px;     /* 上下稍窄，左右寬一些 */
+  font-size: 12pt;
+  min-width: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.column {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .list {
-   flex: 1 1 auto;
+  flex: 1 1 auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
   max-height: calc(80vh);
 }
 
@@ -191,7 +234,7 @@ useSortable(completedRef, completed, {
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   border-left: 5px solid #2f5bcc;
 }
 
@@ -202,7 +245,7 @@ useSortable(completedRef, completed, {
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .avatar {
