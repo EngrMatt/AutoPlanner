@@ -2,9 +2,9 @@
   <div class="layout">
     <Header />
     <div class="main-wrapper">
-      <Sidebar v-model:active="activeMenu" />
+      <Sidebar />
       <main class="content">
-        <NuxtPage :activeMenu="activeMenu" />
+        <NuxtPage />
       </main>
     </div>
   </div>
@@ -12,11 +12,9 @@
 
 
 <script setup>
-import { ref } from 'vue'
 import Header from '~/components/Header.vue'
 import Sidebar from '~/components/Sidebar.vue'
 
-const activeMenu = ref('home')
 </script>
 
 <style scoped>
