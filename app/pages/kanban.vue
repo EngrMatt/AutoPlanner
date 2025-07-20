@@ -2,11 +2,11 @@
   <div class="board">
     <div class="column-wrapper">
       <div class="column-title">New Task
-        &nbsp
-        <a class="column-title-count">2</a>
+        &nbsp;
+        <a class="column-title-count">{{ newTask.length }}</a>
       </div>
       <div class="column">
-        <div ref="newTaskRef" class="list">
+        <div ref="newTaskRef" class="list" data-column-name="New Task">
           <div v-for="item in newTask" :key="item.id" class="card">
             <div class="card-header">
               <div class="avatar"></div>
@@ -26,11 +26,11 @@
 
     <div class="column-wrapper">
       <div class="column-title">Scheduled
-        &nbsp
-        <a class="column-title-count">1</a>
+        &nbsp;
+        <a class="column-title-count">{{ scheduled.length }}</a>
       </div>
       <div class="column">
-        <div ref="scheduledRef" class="list">
+        <div ref="scheduledRef" class="list" data-column-name="Scheduled">
           <div v-for="item in scheduled" :key="item.id" class="card">
             <div class="card-header">
               <div class="avatar"></div>
@@ -50,11 +50,11 @@
 
     <div class="column-wrapper">
       <div class="column-title">In Progress
-          &nbsp
-        <a class="column-title-count">1</a>
+          &nbsp;
+        <a class="column-title-count">{{ inProgress.length }}</a>
       </div>
       <div class="column">
-        <div ref="inProgressRef" class="list">
+        <div ref="inProgressRef" class="list" data-column-name="In Progress">
           <div v-for="item in inProgress" :key="item.id" class="card">
             <div class="card-header">
               <div class="avatar"></div>
@@ -74,11 +74,11 @@
 
     <div class="column-wrapper">
       <div class="column-title">Completed
-          &nbsp
-        <a class="column-title-count">4</a>
+          &nbsp;
+        <a class="column-title-count">{{ completed.length }}</a>
       </div>
       <div class="column">
-        <div ref="completedRef" class="list">
+        <div ref="completedRef" class="list" data-column-name="Completed">
           <div v-for="item in completed" :key="item.id" class="card completed">
             <div class="card-header">
               <div class="avatar"></div>
@@ -112,23 +112,23 @@ import { ref } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 
 const newTask = ref([
-  { id: 1, name: '任務 A' },
-  { id: 2, name: '任務 B' },
+  { id: 1, name: 'Task A' },
+  { id: 2, name: 'Task B' },
 ])
 
 const scheduled = ref([
-  { id: 3, name: '任務 C' },
+  { id: 3, name: 'Task C' },
 ])
 
 const inProgress = ref([
-  { id: 4, name: '任務 D' },
+  { id: 4, name: 'Task D' },
 ])
 
 const completed = ref([
-  { id: 5, name: '任務 E' },
-  { id: 6, name: '任務 E' },
-  { id: 7, name: '任務 E' },
-  { id: 8, name: '任務 E' },
+  { id: 5, name: 'Task E' },
+  { id: 6, name: 'Task E' },
+  { id: 7, name: 'Task E' },
+  { id: 8, name: 'Task E' },
 ])
 
 const activityLogs = ref([])
@@ -143,24 +143,50 @@ const logAction = (message) => {
   activityLogs.value.unshift(`[${timestamp}] ${message}`)
 }
 
+// 用 ref 的 value 指向的元素的 dataset 取得欄位名稱
+const getColumnName = (ref) => {
+  return ref.value?.dataset?.columnName || 'Unknown'
+}
+
+// 各區 useSortable 綁定在 `.list` 上，群組同名 tasks，拖拽完成時記錄詳細訊息
 useSortable(newTaskRef, newTask, {
   group: 'tasks',
-  onEnd: () => logAction('任務移動至 New Task 區'),
+  onEnd: (evt) => {
+    const fromName = evt.from.dataset.columnName || 'Unknown'
+    const toName = evt.to.dataset.columnName || 'Unknown'
+    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
+    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
+  },
 })
 
 useSortable(scheduledRef, scheduled, {
   group: 'tasks',
-  onEnd: () => logAction('任務移動至 Scheduled 區'),
+  onEnd: (evt) => {
+    const fromName = evt.from.dataset.columnName || 'Unknown'
+    const toName = evt.to.dataset.columnName || 'Unknown'
+    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
+    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
+  },
 })
 
 useSortable(inProgressRef, inProgress, {
   group: 'tasks',
-  onEnd: () => logAction('任務移動至 In Progress 區'),
+  onEnd: (evt) => {
+    const fromName = evt.from.dataset.columnName || 'Unknown'
+    const toName = evt.to.dataset.columnName || 'Unknown'
+    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
+    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
+  },
 })
 
 useSortable(completedRef, completed, {
   group: 'tasks',
-  onEnd: () => logAction('任務移動至 Completed 區'),
+  onEnd: (evt) => {
+    const fromName = evt.from.dataset.columnName || 'Unknown'
+    const toName = evt.to.dataset.columnName || 'Unknown'
+    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
+    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
+  },
 })
 </script>
 
@@ -196,8 +222,8 @@ useSortable(completedRef, completed, {
 
 .column-title-count {
   background-color: #ddd;
-  border-radius: 12px;   /* 長橢圓形 */
-  padding: 2px 10px;     /* 上下稍窄，左右寬一些 */
+  border-radius: 12px;
+  padding: 2px 10px;
   font-size: 12pt;
   min-width: 20px;
   text-align: center;
@@ -236,6 +262,14 @@ useSortable(completedRef, completed, {
   flex-direction: column;
   gap: 12px;
   border-left: 5px solid #2f5bcc;
+  user-select: none;
+  cursor: grab;
+}
+
+.card.dragging {
+  cursor: grabbing;
+  opacity: 0.8;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .card.completed {
