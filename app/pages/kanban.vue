@@ -106,9 +106,8 @@
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 
 const newTask = ref([
@@ -143,52 +142,67 @@ const logAction = (message) => {
   activityLogs.value.unshift(`[${timestamp}] ${message}`)
 }
 
-// 用 ref 的 value 指向的元素的 dataset 取得欄位名稱
-const getColumnName = (ref) => {
-  return ref.value?.dataset?.columnName || 'Unknown'
+// 跨欄拖拉時移除來源列表的項目，插入到目標列表的指定位置
+function moveItemBetweenLists(fromList, toList, oldIndex, newIndex) {
+  const item = fromList.splice(oldIndex, 1)[0]
+  toList.splice(newIndex, 0, item)
 }
 
-// 各區 useSortable 綁定在 `.list` 上，群組同名 tasks，拖拽完成時記錄詳細訊息
-useSortable(newTaskRef, newTask, {
-  group: 'tasks',
-  onEnd: (evt) => {
-    const fromName = evt.from.dataset.columnName || 'Unknown'
-    const toName = evt.to.dataset.columnName || 'Unknown'
-    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
-    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
-  },
-})
+// 根據欄位名稱取得對應陣列
+function getListByName(name) {
+  switch (name) {
+    case 'New Task': return newTask.value
+    case 'Scheduled': return scheduled.value
+    case 'In Progress': return inProgress.value
+    case 'Completed': return completed.value
+    default: return null
+  }
+}
 
-useSortable(scheduledRef, scheduled, {
-  group: 'tasks',
-  onEnd: (evt) => {
-    const fromName = evt.from.dataset.columnName || 'Unknown'
-    const toName = evt.to.dataset.columnName || 'Unknown'
-    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
-    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
-  },
-})
+function createSortable(listRef, listReactive) {
+  useSortable(listRef, listReactive.value, {
+    group: 'tasks',
+    onEnd: async (evt) => {
+      await nextTick()
 
-useSortable(inProgressRef, inProgress, {
-  group: 'tasks',
-  onEnd: (evt) => {
-    const fromName = evt.from.dataset.columnName || 'Unknown'
-    const toName = evt.to.dataset.columnName || 'Unknown'
-    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
-    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
-  },
-})
+      const fromName = evt.from.dataset.columnName || 'Unknown'
+      const toName = evt.to.dataset.columnName || 'Unknown'
 
-useSortable(completedRef, completed, {
-  group: 'tasks',
-  onEnd: (evt) => {
-    const fromName = evt.from.dataset.columnName || 'Unknown'
-    const toName = evt.to.dataset.columnName || 'Unknown'
-    const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
-    logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
-  },
-})
+      // 同欄位拖拉，重新排序
+      if (fromName === toName) {
+        const list = getListByName(fromName)
+        if (list) {
+          const movedItem = list.splice(evt.oldIndex, 1)[0]
+          list.splice(evt.newIndex, 0, movedItem)
+        }
+      } else {
+        // 跨欄拖拉
+        const fromList = getListByName(fromName)
+        const toList = getListByName(toName)
+        if (fromList && toList) {
+          moveItemBetweenLists(fromList, toList, evt.oldIndex, evt.newIndex)
+        }
+      }
+
+      const draggedItem = evt.item.querySelector('.card-title')?.textContent || 'A task'
+      logAction(`${draggedItem} moved from ${fromName} to ${toName}`)
+
+      console.log('New Task length:', newTask.value.length)
+      console.log('Scheduled length:', scheduled.value.length)
+      console.log('In Progress length:', inProgress.value.length)
+      console.log('Completed length:', completed.value.length)
+    }
+  })
+}
+
+// 建立四個欄位的 useSortable
+createSortable(newTaskRef, newTask)
+createSortable(scheduledRef, scheduled)
+createSortable(inProgressRef, inProgress)
+createSortable(completedRef, completed)
 </script>
+
+
 
 <style scoped>
 .board {
