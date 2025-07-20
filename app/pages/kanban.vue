@@ -104,6 +104,9 @@ const inProgress = ref([
 
 const completed = ref([
   { id: 5, name: '任務 E' },
+   { id: 6, name: '任務 E' },
+    { id: 7, name: '任務 E' },
+     { id: 8, name: '任務 E' },
 ])
 
 const activityLogs = ref([])
@@ -142,13 +145,18 @@ useSortable(completedRef, completed, {
 <style scoped>
 .board {
   display: flex;
-  height: calc(100vh - 100px);
   gap: 16px;
   font-size: 12pt;
+  max-height: calc(100vh - 100px); /* 改用 max-height */
+  /* 不要 height */
+  align-items: flex-start; /* 讓子項目靠上對齊 */
 }
 
 .column {
-  flex: 1;
+   /* 取消 flex:1 改成以下，讓寬度平均分但高度跟內容 */
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 0;
   background: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -156,6 +164,8 @@ useSortable(completedRef, completed, {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
+  max-height: 100%; /* 確保不超過board max-height */
+  overflow: hidden;
 }
 
 .column-title {
@@ -165,11 +175,12 @@ useSortable(completedRef, completed, {
 }
 
 .list {
-  flex: 1;
+   flex: 1 1 auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: calc(80vh);
 }
 
 .card {
